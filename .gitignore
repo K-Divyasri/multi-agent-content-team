@@ -1,0 +1,15 @@
+# Secrets -- NEVER commit a real key.
+.env
+
+# Posts / transcripts you generate while running the team.
+*.post.md
+post.md
+run_transcript.json
+
+# Python junk.
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/

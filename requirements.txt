@@ -1,0 +1,12 @@
+# The package itself runs on the standard library alone -- no installs needed for the
+# offline team, the CLI, or the tests. These are the OPTIONAL extras.
+
+# Run the agents on a real model (the --real flag / the web app's toggle):
+litellm>=1.40
+python-dotenv>=1.0
+
+# The web demo:
+streamlit>=1.30
+
+# Tests:
+pytest>=8.0

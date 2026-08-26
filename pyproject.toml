@@ -1,0 +1,29 @@
+# pyproject.toml describes the project in the modern, standard way. It lets you run
+# the tool as `content-team ...` after `pip install -e .`, and it's where pytest reads
+# its settings.
+
+[project]
+name = "content-team"
+version = "0.1.0"
+description = "A Researcher/Writer/Editor agent team that collaborates to write a blog post, with a human-in-the-loop approval gate."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+# Install with:  pip install -e ".[real]"   to enable real model calls (--real).
+real = ["litellm>=1.40", "python-dotenv>=1.0"]
+web = ["streamlit>=1.30"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+# Creates the `content-team` terminal command after an editable install.
+content-team = "content_team.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
