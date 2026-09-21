@@ -22,10 +22,9 @@ green on a clean machine, free, every push. Most AI repos can't be tested in CI 
 because they need a paid key. Yours can, honestly, every time. Say so in your README; it's a
 selling point.
 
-The real code lives in the `build_from_scratch/` folder. Unlike a single-folder project,
-here the repo root will be the **whole project folder** (`13-multi-agent-content-team`) and
-the code sits one level down in `build_from_scratch/`. That's why several paths below carry a
-`build_from_scratch/` prefix — keep an eye on that, it's the one thing that trips people up.
+The real code lives at the repo root: `content_team/`, `tests/`, `web_app.py`, and
+`requirements.txt` sit directly next to this `hosting/` folder, so no path below needs a
+subfolder prefix.
 
 A note on the commands: the terminal runner is `python -m content_team "your topic"`, because
 that's how the package runs. After a `pip install -e .` you can also type `content-team
@@ -81,15 +80,13 @@ This is the part that bites people, so read it before you touch any Git command.
 
 Some files belong on GitHub. Some must never leave your laptop. The line between them is a
 file called `.gitignore` — a plain-text list of things Git pretends don't exist. This project
-already ships two: one at the repo root (`.gitignore`) and one inside
-`build_from_scratch/.gitignore`. Between them they cover everything that matters. Open them
-and confirm they include at least these lines.
+ships one, at the repo root (`.gitignore`). It covers everything that matters. Open it
+and confirm it includes at least these lines.
 
-Repo-root `.gitignore`:
+Repo-root `.gitignore`, the essentials:
 
 ```
 .env
-build_from_scratch/.env
 __pycache__/
 *.pyc
 .venv/
@@ -102,7 +99,7 @@ data/*.md
 data/*.txt
 ```
 
-`build_from_scratch/.gitignore`:
+Project-specific lines, also in the same `.gitignore`:
 
 ```
 .env
@@ -168,9 +165,9 @@ saved posts, and machine-specific junk stay out.**
 
 ## Step 2 — Make the local repo and commit
 
-The repo root is the **project folder**, `13-multi-agent-content-team/` — the one that
-contains `build_from_scratch/`, `notebooks/`, and this `hosting/` folder. Open PowerShell
-*there* (not inside `build_from_scratch/`).
+The repo root is the **project folder** — the one that
+contains `content_team/`, `tests/`, and this `hosting/` folder. Open PowerShell
+*there*.
 
 ```powershell
 git init
@@ -182,8 +179,7 @@ git add .
 ```
 Stages every file in the folder *except* the ones `.gitignore` excludes. "Staging" means
 marking them to go into the next snapshot. This project has a `.gitignore` at the repo root
-*and* one inside `build_from_scratch/`, so both the root `.env` and `build_from_scratch/.env`
-are protected. That's exactly what you want.
+that protects `.env`. That's exactly what you want.
 
 ```powershell
 git commit -m "Initial commit: Multi-Agent Content Team -- Researcher/Writer/Editor + human gate"
@@ -271,12 +267,10 @@ A recruiter spends maybe twenty seconds on your repo before deciding whether to 
 The README is the first thing they see (GitHub renders it right under the file list), so it
 has to land the project fast.
 
-You already have a strong README inside `build_from_scratch/README.md` — it's the model to
+You already have a strong README at the repo root (`README.md`) — it's the model to
 follow for voice and length, and it already covers the problem, the skills, how to run it, and
-what you learned. But that one renders only if someone opens the `build_from_scratch/`
-subfolder. Since your repo root is the project folder, GitHub shows the **root** `README.md`
-first. So write a short root `README.md` that sells the project and points down into
-`build_from_scratch/` for the full detail.
+what you learned. GitHub shows the **root** `README.md` first, so make sure its top sells the
+project and the full detail sits further down.
 
 Keep it skimmable. Five things, in this order:
 
@@ -298,7 +292,6 @@ Keep it skimmable. Five things, in this order:
 4. **How to run it.** The exact commands, copy-pasteable:
 
    ```powershell
-   cd build_from_scratch
    python -m venv .venv ; .\.venv\Scripts\Activate.ps1
    pip install -r requirements.txt
    python -m content_team "how sleep affects learning"        # offline run in the terminal
@@ -324,7 +317,7 @@ Don't pad it. A tight README beats a long one.
 
 For this app a picture does a lot of work: it proves it's a real running thing, and the
 **collaboration story is the memorable visual**. Start the app locally (`streamlit run
-web_app.py` from inside `build_from_scratch/`), enter a topic, run the team, and capture it.
+web_app.py` from the repo root), enter a topic, run the team, and capture it.
 
 - **Screenshot:** press **Win + Shift + S**, drag a box around the browser window showing the
   **"How the team collaborated (handoffs)"** panel expanded plus the final post, paste into
@@ -369,9 +362,9 @@ copy hosting\github_actions\ci.yml .github\workflows\ci.yml
 ```
 
 Open `.github\workflows\ci.yml` and read the comments — it's annotated line by line. The one
-thing worth understanding: because the repo root is the project folder, the workflow installs
-from `build_from_scratch/requirements.txt` and runs pytest with `working-directory:
-build_from_scratch`, so it "cd"s into the code folder before testing. Then commit and push:
+thing worth understanding: because the code sits at the repo root, the workflow installs
+from `requirements.txt` and runs pytest straight from the repo root, with no
+`working-directory`. Then commit and push:
 
 ```powershell
 git add .github\workflows\ci.yml
@@ -393,7 +386,7 @@ badge** — it gives you a line of markdown to paste at the very top of `README.
 
 ## Step 6 — Deploy the live demo
 
-This is the payoff. Your app is already a Streamlit app (`build_from_scratch/web_app.py`), and
+This is the payoff. Your app is already a Streamlit app (`web_app.py`), and
 Streamlit apps host free in a couple of places. You don't rewrite anything — the app *imports*
 your `content_team` package and drives the same `research` → `write` → `edit` stages the CLI
 uses, then draws a page with a status panel, the handoff log, and Approve/Reject buttons
@@ -407,7 +400,6 @@ Secret — covered in 6c.
 **Try it locally first.** If it runs on your laptop, it'll run hosted:
 
 ```powershell
-cd build_from_scratch
 pip install -r requirements.txt
 streamlit run web_app.py
 ```
@@ -420,9 +412,8 @@ status panel, and the human review buttons. Run a topic through to confirm.
 1. Go to https://share.streamlit.io and **sign in with GitHub**.
 2. Click **New app**, then **Deploy a public app from GitHub**.
 3. Pick your `multi-agent-content-team` repo and the `main` branch.
-4. Set **Main file path** to `build_from_scratch/web_app.py`. This is the one field people get
-   wrong — remember the app lives one level down, not at the repo root.
-5. Click **Deploy**. Streamlit reads `build_from_scratch/requirements.txt` automatically,
+4. Set **Main file path** to `web_app.py`. The app lives at the repo root.
+5. Click **Deploy**. Streamlit reads `requirements.txt` automatically,
    installs `streamlit` and the rest, builds, and gives you a public `*.streamlit.app` URL.
 
 That URL is your live demo. It runs the offline agents, so it just works for anyone, no key.
@@ -431,7 +422,7 @@ That URL is your live demo. It runs the offline agents, so it just works for any
 `from content_team.agents import edit, research, write`, so Python has to be able to find the
 `content_team` package. On Streamlit Cloud the process starts at the repo root, but Streamlit
 automatically adds the **main file's own folder** to the import path — and since you pointed it
-at `build_from_scratch/web_app.py`, that puts `build_from_scratch/` on the path, right where
+at `web_app.py`, that puts the repo root on the path, right where
 `content_team/` sits next to `web_app.py`. So the import resolves with no extra work. If for
 some reason you ever see a `ModuleNotFoundError: content_team`, the belt-and-braces fix is
 three lines at the very top of `web_app.py`, before the `from content_team...` imports:
@@ -462,15 +453,15 @@ Hugging Face **Spaces** also hosts Streamlit apps free.
    # app.py -- entry point for Hugging Face Spaces; runs the real app.
    import runpy, sys
    from pathlib import Path
-   sys.path.insert(0, str(Path(__file__).parent / "build_from_scratch"))
-   runpy.run_path("build_from_scratch/web_app.py", run_name="__main__")
+   sys.path.insert(0, str(Path(__file__).parent))
+   runpy.run_path("web_app.py", run_name="__main__")
    ```
 
 4. The Space builds and gives you a public URL like
    `https://huggingface.co/spaces/YOURNAME/multi-agent-content-team`. That's your live demo.
 
 Streamlit Cloud (6a) is less fiddly because it points straight at
-`build_from_scratch/web_app.py` and needs no wrapper. Use it unless you specifically want a
+`web_app.py` and needs no wrapper. Use it unless you specifically want a
 Space.
 
 ### 6c. If you want the demo to use a REAL model
@@ -543,7 +534,7 @@ Now it's one of the first things on your profile. Done.
 
 You don't need this for a portfolio, but it's worth knowing the next step exists.
 
-Because `build_from_scratch/` has a `pyproject.toml` with a `content-team` console script, it's
+Because the repo root has a `pyproject.toml` with a `content-team` console script, it's
 already shaped like a real installable package. Later, you could publish it to **PyPI** (the
 Python Package Index) so anyone can `pip install` it, or let people run it in an isolated
 environment with **pipx**. That involves making a PyPI account, building the package, and
@@ -560,7 +551,7 @@ provider (Google AI Studio, Groq, Anthropic) and **revoke/rotate it**, because i
 pushed, it's already public. Then remove the file from Git while keeping it on disk:
 
 ```powershell
-git rm --cached build_from_scratch\.env
+git rm --cached .env
 git commit -m "Remove committed .env"
 git push
 ```
@@ -604,12 +595,12 @@ git rm --cached path\to\the\big\file
 
 **CI is red but the tests pass on my laptop.** Read the Actions log bottom-up. The usual cause
 is a dependency you have installed locally but forgot to list in
-`build_from_scratch/requirements.txt` — CI starts from nothing, so it only has what's listed.
+`requirements.txt` — CI starts from nothing, so it only has what's listed.
 Add the missing package, commit, push, and it re-runs automatically. (It won't be a missing API
 key — the tests are offline by design, which is the whole point.)
 
 **The deployed app shows `ModuleNotFoundError: content_team`.** Streamlit couldn't find the
-package. Make sure the **Main file path** is `build_from_scratch/web_app.py` (not just
-`web_app.py`), so the app's own folder — where `content_team/` lives — lands on the import
+package. Make sure the **Main file path** is `web_app.py` (at the repo root), so
+the app's own folder — where `content_team/` lives — lands on the import
 path. If it still happens, add the three `sys.path` lines from Step 6a to the top of
 `web_app.py`.

@@ -5,7 +5,7 @@ haven't actually verified by running the command — "should work" isn't the sam
 
 ## Runs locally
 
-- [ ] Fresh virtual environment, dependencies installed cleanly (from `build_from_scratch/`):
+- [ ] Fresh virtual environment, dependencies installed cleanly (from the repo root):
       `python -m venv .venv ; .\.venv\Scripts\Activate.ps1` then `pip install -r requirements.txt`
 - [ ] The terminal runner works offline, no API key:
       `python -m content_team "how sleep affects learning"` prints the handoff log and the
@@ -22,13 +22,13 @@ haven't actually verified by running the command — "should work" isn't the sam
 
 ## Tests pass
 
-- [ ] `pytest` run from `build_from_scratch/` is all green (18 tests, all offline, no key).
+- [ ] `pytest` run from the repo root is all green (18 tests, all offline, no key).
 - [ ] You ran it in the fresh venv, not just your everyday one, so you know the deps are complete.
 
 ## README is recruiter-ready
 
 - [ ] A root `README.md` exists and covers: the problem, what the team does, how to run it, and
-      what you learned. (Point deeper detail at `build_from_scratch/README.md`.)
+      what you learned.
 - [ ] A **screenshot or GIF** of the team collaborating — the handoff log plus the final post —
       is embedded (`docs/team.png` or a short GIF). The collaboration story is the memorable
       visual; show it.
@@ -37,9 +37,8 @@ haven't actually verified by running the command — "should work" isn't the sam
 
 ## Secrets are clean
 
-- [ ] The root `.gitignore` contains `.env` and `build_from_scratch/.env`; the
-      `build_from_scratch/.gitignore` contains `.env` (plus `*.post.md`, `post.md`,
-      `run_transcript.json`, `.venv/`, `__pycache__/`). The root also ignores `data/*`.
+- [ ] The root `.gitignore` contains `.env` (plus `*.post.md`, `post.md`,
+      `run_transcript.json`, `.venv/`, `__pycache__/`).
 - [ ] `git status` shows `.env` is NOT tracked.
 - [ ] `git ls-files` output contains NO `.env` (only `.env.example`). If `.env` is there,
       remove it and rotate the key — see the hosting guide's troubleshooting section.
@@ -60,12 +59,12 @@ haven't actually verified by running the command — "should work" isn't the sam
 - [ ] The run used NO secrets (the tests are offline) — confirm it passed without any API key
       configured. That's a selling point; mention it in the README.
 - [ ] If it was red, you read the log and fixed the cause (usually a missing dep in
-      `build_from_scratch/requirements.txt`), then re-ran to green.
+      `requirements.txt`), then re-ran to green.
 
 ## Live demo
 
 - [ ] Deployed free to Streamlit Community Cloud (main file path
-      `build_from_scratch/web_app.py`) or Hugging Face Spaces.
+      `web_app.py`) or Hugging Face Spaces.
 - [ ] Opening the public URL loads the page and you can run a topic through the team — it uses
       the **offline agents**, so it works for anyone with no key.
 - [ ] (Only if you enabled a real model) the API key is set as a host **Secret**
