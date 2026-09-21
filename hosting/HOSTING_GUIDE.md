@@ -165,7 +165,7 @@ saved posts, and machine-specific junk stay out.**
 
 ## Step 2 — Make the local repo and commit
 
-The repo root is the **project folder** — the one that
+The repo root is the **project folder** - the one that
 contains `content_team/`, `tests/`, and this `hosting/` folder. Open PowerShell
 *there*.
 
@@ -267,7 +267,7 @@ A recruiter spends maybe twenty seconds on your repo before deciding whether to 
 The README is the first thing they see (GitHub renders it right under the file list), so it
 has to land the project fast.
 
-You already have a strong README at the repo root (`README.md`) — it's the model to
+You already have a strong README at the repo root (`README.md`) - it's the model to
 follow for voice and length, and it already covers the problem, the skills, how to run it, and
 what you learned. GitHub shows the **root** `README.md` first, so make sure its top sells the
 project and the full detail sits further down.
@@ -595,12 +595,12 @@ git rm --cached path\to\the\big\file
 
 **CI is red but the tests pass on my laptop.** Read the Actions log bottom-up. The usual cause
 is a dependency you have installed locally but forgot to list in
-`requirements.txt` — CI starts from nothing, so it only has what's listed.
+`requirements.txt` - CI starts from nothing, so it only has what's listed.
 Add the missing package, commit, push, and it re-runs automatically. (It won't be a missing API
 key — the tests are offline by design, which is the whole point.)
 
 **The deployed app shows `ModuleNotFoundError: content_team`.** Streamlit couldn't find the
 package. Make sure the **Main file path** is `web_app.py` (at the repo root), so
-the app's own folder — where `content_team/` lives — lands on the import
+the app's own folder - where `content_team/` lives - lands on the import
 path. If it still happens, add the three `sys.path` lines from Step 6a to the top of
 `web_app.py`.
